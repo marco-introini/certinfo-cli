@@ -4,6 +4,19 @@ A CLI application that shows Certificate Information
 
 ------
 
+## Usage
+
+- clone the repository
+- execute `composer install`
+
+All the available commands are visible using:
+
+```
+php certinfo-cli
+```
+
+------
+
 ## Thanks
 This package is based on Laravel Zero.
 
