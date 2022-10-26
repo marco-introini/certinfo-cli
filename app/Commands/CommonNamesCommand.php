@@ -4,6 +4,7 @@ namespace App\Commands;
 
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
+use Spatie\SslCertificate\SslCertificate;
 
 class CommonNamesCommand extends Command
 {
@@ -35,6 +36,9 @@ class CommonNamesCommand extends Command
 
         $this->warn("Working on $directory");
 
+        $certificate = SslCertificate::createFromFile($directory);
+
+        echo $certificate->getDomain();
 
         $this->info('Operation executed');
     }
