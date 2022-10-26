@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\Command;
 use Spatie\SslCertificate\SslCertificate;
 
@@ -13,7 +14,7 @@ class CommonNamesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'certificate:common-names
+    protected $signature = 'certificate:check-dir
                             {directory : the directory to scan (required)}
                             {--zip : check inside zip files (optional)}
                             ';
@@ -30,17 +31,31 @@ class CommonNamesCommand extends Command
      *
      * @return mixed
      */
-    public function handle(): void
+    public function handle(): mixed
     {
         $directory = $this->argument('directory');
+        $this->info("");
 
-        $this->warn("Working on $directory");
+        if (!File::isDirectory($directory)) {
+            $this->error("$directory is NOT a directory");
+            return 1;
+        }
 
-        $certificate = SslCertificate::createFromFile($directory);
+        foreach (File::files($directory) as $file){
+            if (($file->getExtension()!=="pem")&&($file->getExtension()!=="PEM"))
+                continue;
+            //$this->info("Found ".$file->getBasename());
 
-        echo $certificate->getDomain();
+            try {
+                $certificate = SslCertificate::createFromFile($file->getPathname());
+                $this->info($file->getBasename(). ": ". $certificate->getDomain(). " --> valid for ".$certificate->daysUntilExpirationDate()." days");
+            }
+            catch (\Exception $e) {
+                $this->warn($file->getBasename(). ": is not a valid public certificate");
+            }
+        }
 
-        $this->info('Operation executed');
+        return true;
     }
 
     /**
