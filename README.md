@@ -12,7 +12,7 @@ A CLI application that shows Certificate Information
 All the available commands are visible using:
 
 ```
-php certinfo-cli
+php certinfo
 ```
 
 ------
