@@ -2,12 +2,13 @@
 
 namespace App\Commands;
 
+use App\Helpers\CertificateFile;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\Command;
 use Spatie\SslCertificate\SslCertificate;
 
-class CommonNamesCommand extends Command
+class CheckDirCommand extends Command
 {
     /**
      * The signature of the command.
@@ -42,13 +43,19 @@ class CommonNamesCommand extends Command
         }
 
         foreach (File::files($directory) as $file){
-            if (($file->getExtension()!=="pem")&&($file->getExtension()!=="PEM"))
+            if (!CertificateFile::isPublicCertificate($file))
                 continue;
-            //$this->info("Found ".$file->getBasename());
 
             try {
                 $certificate = SslCertificate::createFromFile($file->getPathname());
-                $this->info($file->getBasename(). ": ". $certificate->getDomain(). " --> valid for ".$certificate->daysUntilExpirationDate()." days");
+                $this->info($file->getBasename()
+                    . ": "
+                    .$certificate->getDomain()
+                    ." --> valid for "
+                    .$certificate->daysUntilExpirationDate()
+                    ." days (expitation "
+                    .$certificate->expirationDate()->format('d-m-Y')
+                    .")");
             }
             catch (\Exception $e) {
                 $this->warn($file->getBasename(). ": is not a valid public certificate");
