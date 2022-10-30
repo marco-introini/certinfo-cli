@@ -3,17 +3,17 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Str;
-use Symfony\Component\Finder\SplFileInfo;
+use Illuminate\Support\Facades\File;
 
 class CertificateFile
 {
-    public static function isPublicCertificate(SplFileInfo $splFileInfo): bool
+    public static function isPublicCertificate(string $filePath): bool
     {
-        $upperExtension = Str::upper($splFileInfo->getExtension());
+        $upperExtension = Str::upper(File::extension($filePath));
         if (($upperExtension==="PEM")
-            ||($upperExtension==="CER")
-            ||($upperExtension==="CRT")){
-            if (Str::contains(haystack: $splFileInfo->getContents(),
+            || ($upperExtension==="CER")
+            || ($upperExtension==="CRT")){
+            if (Str::contains(haystack: File::get($filePath),
                 needles: "BEGIN CERTIFICATE",
                 ignoreCase: true))
             return true;
@@ -23,4 +23,5 @@ class CertificateFile
         }
         return false;
     }
+
 }
