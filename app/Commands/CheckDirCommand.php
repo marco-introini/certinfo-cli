@@ -10,28 +10,13 @@ use Spatie\SslCertificate\SslCertificate;
 
 class CheckDirCommand extends Command
 {
-    /**
-     * The signature of the command.
-     *
-     * @var string
-     */
     protected $signature = 'certificate:check-dir
                             {directory : the directory to scan (required)}
                             {--zip : check inside zip files (optional)}
                             ';
 
-    /**
-     * The description of the command.
-     *
-     * @var string
-     */
     protected $description = 'Get the list of CN of certificates inside the specified directory';
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle(): mixed
     {
         $directory = $this->argument('directory');
@@ -43,7 +28,7 @@ class CheckDirCommand extends Command
         }
 
         foreach (File::files($directory) as $file){
-            if (!CertificateFile::isPublicCertificate($file))
+            if (!CertificateFile::isPublicCertificate($file->getPathname()))
                 continue;
 
             try {
@@ -53,24 +38,19 @@ class CheckDirCommand extends Command
                     .$certificate->getDomain()
                     ." --> valid for "
                     .$certificate->daysUntilExpirationDate()
-                    ." days (expitation "
+                    ." days (expiration "
                     .$certificate->expirationDate()->format('d-m-Y')
                     .")");
             }
             catch (\Exception $e) {
                 $this->warn($file->getBasename(). ": is not a valid public certificate");
+                return 1;
             }
         }
 
-        return true;
+        return 0;
     }
 
-    /**
-     * Define the command's schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
-     */
     public function schedule(Schedule $schedule): void
     {
         // $schedule->command(static::class)->everyMinute();
