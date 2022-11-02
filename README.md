@@ -11,7 +11,7 @@ A CLI application that shows Certificate Information
 You can install the binary in global composer directory:
 
 ```
-global require marco-introini/certinfo-cli
+composer global require marco-introini/certinfo-cli
 ```
 
 All the available commands are visible using:
@@ -33,7 +33,9 @@ Laravel Zero was created by [Nuno Maduro](https://github.com/nunomaduro) and [Ow
 
 ## Support the development
 
-- ToDo
+If you like my work you can buy me a coffee
+
+- via [PayPal](https://paypal.me/marcointroini)
 
 ## License
 
