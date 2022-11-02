@@ -19,7 +19,7 @@
         "php": "^8.0",
         "nunomaduro/termwind": "^1.13",
         "spatie/ray": "^1.36",
-        "spatie/ssl-certificate": "^2.3"
+        "spatie/ssl-certificate": "^2.4"
     },
     "require-dev": {
         "laravel-zero/framework": "^9.1.3",
