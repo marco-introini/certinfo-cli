@@ -1,10 +1,10 @@
 # Certinfo
 
-A CLI application that shows Certificate Information
+A CLI application that shows Certificate Information of single X509 certificate (PEM and DER format) or multiple certificates (check a directory)
 
 ------
 
-## Usage
+## Installation
 
 ### Global installation
 
@@ -14,10 +14,28 @@ You can install the binary in global composer directory:
 composer global require marco-introini/certinfo-cli
 ```
 
+------
+
+## Usage
+
 All the available commands are visible using:
 
 ```
 certinfo
+```
+
+### Check a single file
+
+```
+certinfo certificate:check <filename>
+```
+
+_filename_ can be a PEM, CRT, CER or DER file
+
+### Check every file in a directory
+
+```
+certinfo certificate:check-dir <directory>
 ```
 
 ------
