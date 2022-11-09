@@ -2,26 +2,37 @@
 
 namespace App\Helpers;
 
+use App\Enums\CertTypeEnum;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 
 class CertificateFile
 {
-    public static function isPublicCertificate(string $filePath): bool
+
+    private string $filePath;
+    private CertTypeEnum $certType;
+
+    public function __construct(string $filePath)
     {
-        $upperExtension = Str::upper(File::extension($filePath));
+        $this->filePath = $filePath;
+        $upperExtension = Str::upper(File::extension($this->filePath));
         if (($upperExtension==="PEM")
             || ($upperExtension==="CER")
             || ($upperExtension==="CRT")){
-            if (Str::contains(haystack: File::get($filePath),
+            if (Str::contains(haystack: File::get($this->filePath),
                 needles: "BEGIN CERTIFICATE",
                 ignoreCase: true))
-            return true;
+                $this->certType = CertTypeEnum::PEM;
         }
         if ($upperExtension==="DER") {
-            return true;
+            $this->certType = CertTypeEnum::DER;
         }
-        return false;
+        $this->certType = CertTypeEnum::UNKNOWN;
+    }
+
+    public function certType(): CertTypeEnum
+    {
+        return $this->certType;
     }
 
 }

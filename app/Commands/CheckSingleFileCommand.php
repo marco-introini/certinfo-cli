@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Enums\CertTypeEnum;
 use App\Helpers\CertificateFile;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\File;
@@ -18,15 +19,15 @@ class CheckSingleFileCommand extends Command
 
     public function handle(): mixed
     {
-        $file = $this->argument('file');
         $this->info("");
+        $file = $this->argument('file');
 
         if (!File::isFile($file)) {
             $this->error("$file is NOT a valid file");
             return 1;
         }
-
-        if (!CertificateFile::isPublicCertificate($file)) {
+        $certificateFile = new CertificateFile($file);
+        if ($certificateFile->certType() == CertTypeEnum::UNKNOWN) {
             $this->error("$file is NOT a valid file");
             return 1;
         }

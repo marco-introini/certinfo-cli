@@ -4,7 +4,7 @@ A CLI application that shows Certificate Information of single X509 certificate 
 
 ------
 
-## Installation
+## User Installation
 
 ### Global installation
 
@@ -37,6 +37,12 @@ _filename_ can be a PEM, CRT, CER or DER file
 ```
 certinfo certificate:check-dir <directory>
 ```
+
+------
+
+## Developer information
+
+Inside the Makefile there is the build command to create the executable
 
 ------
 

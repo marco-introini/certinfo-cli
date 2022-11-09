@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Enums\CertTypeEnum;
 use App\Helpers\CertificateFile;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\File;
@@ -27,23 +28,26 @@ class CheckDirCommand extends Command
             return 1;
         }
 
-        foreach (File::files($directory) as $file){
-            if (!CertificateFile::isPublicCertificate($file->getPathname()))
+        foreach (File::files($directory) as $file) {
+            $certificateFile = new CertificateFile($file->getPathname());
+            if ($certificateFile->certType() == CertTypeEnum::UNKNOWN) {
                 continue;
+            }
 
             try {
                 $certificate = SslCertificate::createFromFile($file->getPathname());
-                $this->info($file->getBasename()
-                    . ": "
+                $this->info(
+                    $file->getBasename()
+                    .": "
                     .$certificate->getDomain()
                     ." --> valid for "
                     .$certificate->daysUntilExpirationDate()
                     ." days (expiration "
                     .$certificate->expirationDate()->format('d-m-Y')
-                    .")");
-            }
-            catch (\Exception $e) {
-                $this->warn($file->getBasename(). ": is not a valid public certificate");
+                    .")"
+                );
+            } catch (\Exception $e) {
+                $this->warn($file->getBasename().": is not a valid public certificate");
                 return 1;
             }
         }
