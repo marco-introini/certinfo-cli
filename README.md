@@ -2,6 +2,8 @@
 
 A CLI application that shows Certificate Information of single X509 certificate (PEM and DER format) or multiple certificates (check a directory)
 
+This can also be used for trasformation
+
 ------
 
 ## User Installation
@@ -36,6 +38,18 @@ _filename_ can be a PEM, CRT, CER or DER file
 
 ```
 certinfo certificate:check-dir <directory>
+```
+
+### Convert PEM to DER
+
+```
+certinfo convert:pem2der <filename>
+```
+
+### Convert DER to PEM
+
+```
+certinfo convert:der2pem <filename>
 ```
 
 ------
