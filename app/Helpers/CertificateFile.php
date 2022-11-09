@@ -10,24 +10,28 @@ class CertificateFile
 {
 
     private string $filePath;
-    private CertTypeEnum $certType;
+    private CertTypeEnum $certType = CertTypeEnum::UNKNOWN;
 
     public function __construct(string $filePath)
     {
         $this->filePath = $filePath;
         $upperExtension = Str::upper(File::extension($this->filePath));
-        if (($upperExtension==="PEM")
-            || ($upperExtension==="CER")
-            || ($upperExtension==="CRT")){
-            if (Str::contains(haystack: File::get($this->filePath),
+        if (($upperExtension === "PEM")
+            || ($upperExtension === "CER")
+            || ($upperExtension === "CRT")) {
+            if (Str::contains(
+                haystack: File::get($this->filePath),
                 needles: "BEGIN CERTIFICATE",
-                ignoreCase: true))
+                ignoreCase: true
+            )) {
                 $this->certType = CertTypeEnum::PEM;
+                return;
+            }
         }
-        if ($upperExtension==="DER") {
+        if ($upperExtension === "DER") {
             $this->certType = CertTypeEnum::DER;
+            return;
         }
-        $this->certType = CertTypeEnum::UNKNOWN;
     }
 
     public function certType(): CertTypeEnum
