@@ -12,7 +12,7 @@ test('Directory works', function () {
     $this//->withoutMockingConsoleOutput()
     ->artisan('certificate:check-dir',['directory' => getcwd().'/tests/stubs/'])
         ->assertOk()
-        ->expectsOutputToContain("expiration");
+        ->expectsOutputToContain("Expiration");
     //dump(\Illuminate\Support\Facades\Artisan::output());
 });
 

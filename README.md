@@ -2,7 +2,7 @@
 
 A CLI application that shows Certificate Information of single X509 certificate (PEM and DER format) or multiple certificates (check a directory)
 
-This can also be used for trasformation
+This can also be used for converting PEM certificate to DER and vice-versa
 
 ------
 
@@ -34,11 +34,15 @@ certinfo certificate:check <filename>
 
 _filename_ can be a PEM, CRT, CER or DER file
 
+![](readme_img_file.png)
+
 ### Check every file in a directory
 
 ```
 certinfo certificate:check-dir <directory>
 ```
+
+![](readme_img_dir.png)
 
 ### Convert PEM to DER
 
@@ -57,6 +61,17 @@ certinfo convert:der2pem <filename>
 ## Developer information
 
 Inside the Makefile there is the build command to create the executable
+
+### Test
+
+There are several test written using Pest inside the tests/Feature directory.
+
+Before executing Pest you must generate stub certificates inside the tests/stubs directory. 
+There is a Makefile recipe for automating everything:
+
+```
+make test
+```
 
 ------
 
