@@ -35,16 +35,12 @@ class CheckSingleFileCommand extends Command
 
         try {
             $certificate = SslCertificate::createFromFile($file);
-            $this->info(
-                File::basename($file)
-                .": "
-                .$certificate->getDomain()
-                ." --> valid for "
+            $this->info(File::basename($file));
+            $this->info($certificate->getDomain());
+            $this->info(" --> valid for "
                 .$certificate->daysUntilExpirationDate()
-                ." days (expiration "
-                .$certificate->expirationDate()->format('d-m-Y')
-                .")"
-            );
+                ." days (expiration ");
+            $this->info($certificate->expirationDate()->format('d-m-Y'));
         } catch (\Exception $e) {
             $this->warn($file.": is not a valid public certificate");
             return 1;
