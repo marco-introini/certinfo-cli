@@ -13,7 +13,6 @@ class CheckDirCommand extends Command
 {
     protected $signature = 'certificate:check-dir
                             {directory : the directory to scan (required)}
-                            {--zip : check inside zip files (optional)}
                             ';
 
     protected $description = 'Get the list of CN of certificates inside the specified directory';
@@ -55,8 +54,5 @@ class CheckDirCommand extends Command
         return 0;
     }
 
-    public function schedule(Schedule $schedule): void
-    {
-        // $schedule->command(static::class)->everyMinute();
-    }
+
 }
