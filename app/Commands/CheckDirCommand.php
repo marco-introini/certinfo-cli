@@ -28,6 +28,8 @@ class CheckDirCommand extends Command
             return 1;
         }
 
+        $certData = [];
+
         foreach (File::files($directory) as $file) {
             $certificateFile = new CertificateFile($file->getPathname());
             if ($certificateFile->certType() == CertTypeEnum::UNKNOWN) {
@@ -36,21 +38,19 @@ class CheckDirCommand extends Command
 
             try {
                 $certificate = SslCertificate::createFromFile($file->getPathname());
-                $this->info(
-                    $file->getBasename()
-                    .": "
-                    .$certificate->getDomain()
-                    ." --> valid for "
-                    .$certificate->daysUntilExpirationDate()
-                    ." days (expiration "
-                    .$certificate->expirationDate()->format('d-m-Y')
-                    .")"
-                );
+                $certData[] = [
+                    $file->getBasename(),
+                    $certificate->getDomain(),
+                    $certificate->daysUntilExpirationDate().' days',
+                    $certificate->expirationDate()->format('d-m-Y'),
+                ];
             } catch (\Exception $e) {
                 $this->warn($file->getBasename().": is not a valid public certificate");
                 return 1;
             }
         }
+
+        $this->table(['Filename','Domain/CN','Expiration','Valid for'],$certData);
 
         return 0;
     }

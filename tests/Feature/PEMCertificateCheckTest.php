@@ -4,7 +4,7 @@ test('PEM public certificate works', function () {
     $this//->withoutMockingConsoleOutput()
     ->artisan('certificate:check',['file' => getcwd().'/tests/stubs/Example_PUBLIC.pem'])
         ->assertOk()
-        ->expectsOutputToContain("expiration 06-11-2032");
+        ->expectsOutputToContain("Valid until");
     //dump(\Illuminate\Support\Facades\Artisan::output());
 });
 
