@@ -2,40 +2,26 @@
 
 namespace App\Commands;
 
-use App\Enums\CertTypeEnum;
-use App\Helpers\CertificateFile;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\Command;
 use Spatie\SslCertificate\SslCertificate;
 
-class CheckSingleFileCommand extends Command
+class CheckUrlCommand extends Command
 {
-    protected $signature = 'check:file
-                            {file : the certificate file (required)}
+    protected $signature = 'check:url
+                            {url : site to check (required)}
                             ';
 
-    protected $description = 'Get validity of a single certificate';
+    protected $description = 'Get validity of the certificate of a site';
 
     public function handle(): mixed
     {
         $this->info("");
-        $file = $this->argument('file');
-
-        if (!File::isFile($file)) {
-            $this->error("$file is NOT a valid file");
-            return 1;
-        }
-        $certificateFile = new CertificateFile($file);
-        if ($certificateFile->certType() == CertTypeEnum::UNKNOWN) {
-            $this->error("$file is NOT a valid file");
-            return 1;
-        }
-
+        $url = $this->argument('url');
 
         try {
-            $certificate = SslCertificate::createFromFile($file);
-            $this->table(['Filename', File::basename($file)],[
+            $certificate = SslCertificate::createForHostName($url);
+            $this->table(['URL', $url],[
                 ['Domain/CN', $certificate->getDomain()],
                 ['Issuer', $certificate->getIssuer()],
                 ['Organization', $certificate->getOrganization()],
@@ -44,7 +30,7 @@ class CheckSingleFileCommand extends Command
                 ['Valid until', $certificate->expirationDate()->format('d-m-Y')],
             ]);
         } catch (\Exception $e) {
-            $this->warn($file.": is not a valid public certificate");
+            $this->warn($url.": is not a valid SSL Site");
             return 1;
         }
 

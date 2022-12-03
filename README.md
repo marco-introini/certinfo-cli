@@ -29,7 +29,7 @@ certinfo
 ### Check a single file
 
 ```
-certinfo certificate:check <filename>
+certinfo check:file <filename>
 ```
 
 _filename_ can be a PEM, CRT, CER or DER file
@@ -39,10 +39,16 @@ _filename_ can be a PEM, CRT, CER or DER file
 ### Check every file in a directory
 
 ```
-certinfo certificate:check-dir <directory>
+certinfo check:directory <directory>
 ```
 
 ![](readme_img_dir.png)
+
+### Check an HTTPS Url
+
+```
+certinfo check:url <url>
+```
 
 ### Convert PEM to DER
 

@@ -11,7 +11,7 @@ use Spatie\SslCertificate\SslCertificate;
 
 class CheckDirCommand extends Command
 {
-    protected $signature = 'certificate:check-dir
+    protected $signature = 'check:directory
                             {directory : the directory to scan (required)}
                             ';
 
