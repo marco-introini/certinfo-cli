@@ -23,6 +23,8 @@ class CheckUrlCommand extends Command
             $certificate = SslCertificate::createForHostName($url);
             $this->table(['URL', $url],[
                 ['Domain/CN', $certificate->getDomain()],
+                ['Additional Domains', implode(" - ",$certificate->getAdditionalDomains())],
+                ['Remote Address', $certificate->getRemoteAddress()],
                 ['Issuer', $certificate->getIssuer()],
                 ['Organization', $certificate->getOrganization()],
                 ['Serial number', $certificate->getSerialNumber()],
