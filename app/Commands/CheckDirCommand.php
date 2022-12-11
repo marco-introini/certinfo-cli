@@ -40,8 +40,8 @@ class CheckDirCommand extends Command
                 $certData[] = [
                     $file->getBasename(),
                     $certificate->getDomain(),
-                    $certificate->daysUntilExpirationDate().' days',
                     $certificate->expirationDate()->format('d-m-Y'),
+                    $certificate->daysUntilExpirationDate().' days',
                 ];
             } catch (\Exception $e) {
                 $this->warn($file->getBasename().": is not a valid public certificate");
