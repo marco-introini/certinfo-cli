@@ -14,33 +14,30 @@ class CheckUrlCommand extends Command
 
     protected $description = 'Get validity of the certificate of a site';
 
-    public function handle(): mixed
+    public function handle(): int
     {
-        $this->info("");
+        $this->info('');
         $url = $this->argument('url');
 
         try {
             $certificate = SslCertificate::createForHostName($url);
-            $this->table(['URL', $url],[
+            $this->table(['URL', $url], [
                 ['Domain/CN', $certificate->getDomain()],
-                ['Additional Domains', implode(" - ",$certificate->getAdditionalDomains())],
+                ['Additional Domains', implode(' - ', $certificate->getAdditionalDomains())],
                 ['Remote Address', $certificate->getRemoteAddress()],
                 ['Issuer', $certificate->getIssuer()],
                 ['Organization', $certificate->getOrganization()],
                 ['Serial number', $certificate->getSerialNumber()],
-                ['Valid for', $certificate->daysUntilExpirationDate()." days"],
+                ['Valid for', $certificate->daysUntilExpirationDate().' days'],
                 ['Valid until', $certificate->expirationDate()->format('d-m-Y')],
             ]);
         } catch (\Exception $e) {
-            $this->warn($url.": is not a valid SSL Site");
+            $this->warn($url.': is not a valid SSL Site');
+
             return 1;
         }
 
         return 0;
     }
 
-    public function schedule(Schedule $schedule): void
-    {
-        // $schedule->command(static::class)->everyMinute();
-    }
 }

@@ -4,7 +4,6 @@ namespace App\Commands;
 
 use App\Enums\CertTypeEnum;
 use App\Helpers\CertificateFile;
-use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\Command;
 use Spatie\SslCertificate\SslCertificate;
@@ -17,13 +16,14 @@ class CheckDirCommand extends Command
 
     protected $description = 'Get the list of CN of certificates inside the specified directory';
 
-    public function handle(): mixed
+    public function handle(): int
     {
         $directory = $this->argument('directory');
-        $this->info("");
+        $this->info('');
 
-        if (!File::isDirectory($directory)) {
+        if (! File::isDirectory($directory)) {
             $this->error("$directory is NOT a directory");
+
             return 1;
         }
 
@@ -44,15 +44,14 @@ class CheckDirCommand extends Command
                     $certificate->daysUntilExpirationDate().' days',
                 ];
             } catch (\Exception $e) {
-                $this->warn($file->getBasename().": is not a valid public certificate");
+                $this->warn($file->getBasename().': is not a valid public certificate');
+
                 return 1;
             }
         }
 
-        $this->table(['Filename','Domain/CN','Expiration','Valid for'],$certData);
+        $this->table(['Filename', 'Domain/CN', 'Expiration', 'Valid for'], $certData);
 
         return 0;
     }
-
-
 }
