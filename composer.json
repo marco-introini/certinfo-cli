@@ -2,7 +2,7 @@
     "name": "marco-introini/certinfo-cli",
     "description": "SSL Certificate check in the command line.",
     "keywords": ["ssl", "certificates", "laravel", "laravel zero", "console", "cli"],
-    "homepage": "https://marcointroini.it",
+    "homepage": "https://mintdev.me",
     "type": "project",
     "license": "MIT",
     "support": {
