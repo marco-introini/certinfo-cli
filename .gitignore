@@ -4,4 +4,4 @@
 /.vagrant
 .phpunit.result.cache
 /tests/stubs/
-/.phpunit.cache/test-results
+/.phpunit.cache/
