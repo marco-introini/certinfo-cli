@@ -20,14 +20,13 @@
         "guzzlehttp/guzzle": "^7.4",
         "illuminate/http": "^11.0",
         "nunomaduro/termwind": "^2.0",
-        "spatie/ray": "^1.36",
         "spatie/ssl-certificate": "^2.4"
     },
     "require-dev": {
         "laravel-zero/framework": "^11",
         "laravel/pint": "^1.0",
         "mockery/mockery": "^1.4.4",
-        "pestphp/pest": "^2"
+        "pestphp/pest": "^3"
     },
     "autoload": {
         "psr-4": {
